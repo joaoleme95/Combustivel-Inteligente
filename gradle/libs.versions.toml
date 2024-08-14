@@ -8,8 +8,13 @@ espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.8.2"
 activity-compose = "1.9.0"
 compose-bom = "2023.03.00"
+foundation-layout-android = "1.6.8"
+navigation-compose-version = "2.6.0"
+navigation-runtime-ktx = "2.7.7"
+navigation-compose = "2.7.7"
 
 [libraries]
+androidx-navigation-compose-v260 = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose-version" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
@@ -24,6 +29,9 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundation-layout-android" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation-runtime-ktx" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
