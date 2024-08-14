@@ -14,12 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -115,46 +119,44 @@ fun OpcoesMenu(customFontFamily: FontFamily, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
     ) {
-        val optionModifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 26.dp)
-            .clickable { /* Ação para a opção */ }
-
         // Primeira opção
-        Row(
-            modifier = optionModifier.clickable {
-                navController.navigate("consumo")
-            },
-            verticalAlignment = Alignment.CenterVertically
+        Button(
+            onClick = { navController.navigate("consumo") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
         ) {
             Text(
                 text = "Consumo",
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
-                modifier = Modifier.align(Alignment.CenterVertically)
+                color = Color.Black
             )
             Spacer(modifier = Modifier.weight(1f))
             Image(
-                painter = painterResource(id = R.drawable.grafico_dinheiro),
+                painter = painterResource(id = R.drawable.bomba_combustivel),
                 contentDescription = "",
                 modifier = Modifier.size(50.dp)
             )
         }
 
         // Segunda opção
-        Row(
-            modifier = optionModifier,
-            verticalAlignment = Alignment.CenterVertically
+        Button(
+            onClick = { /* Ação para a segunda opção */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
         ) {
             Text(
                 text = "Custo da viagem",
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
-                modifier = Modifier.align(Alignment.CenterVertically)
+                color = Color.Black
             )
             Spacer(modifier = Modifier.weight(1f))
             Image(
@@ -165,26 +167,30 @@ fun OpcoesMenu(customFontFamily: FontFamily, navController: NavController) {
         }
 
         // Terceira opção
-        Row(
-            modifier = optionModifier,
-            verticalAlignment = Alignment.CenterVertically
+        Button(
+            onClick = { /* Ação para a terceira opção */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
         ) {
             Text(
                 text = "Combustível vantajoso",
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
-                modifier = Modifier.align(Alignment.CenterVertically)
+                color = Color.Black
             )
             Spacer(modifier = Modifier.weight(1f))
             Image(
-                painter = painterResource(id = R.drawable.bomba_combustivel),
+                painter = painterResource(id = R.drawable.grafico_dinheiro),
                 contentDescription = "",
                 modifier = Modifier.size(50.dp)
             )
         }
     }
 }
+
 
 
 @Preview
