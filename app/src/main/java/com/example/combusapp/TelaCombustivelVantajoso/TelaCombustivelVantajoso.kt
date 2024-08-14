@@ -165,7 +165,7 @@ fun PrecoGasolina(customFontFamily: FontFamily, valorEtanol: String) {
                     valorGasolina = newText
                 }
             },
-            placeholder = { Text("Ex.: R$ 4,50", fontFamily = customFontFamily) },
+            placeholder = { Text("Ex.: R$ 6,70", fontFamily = customFontFamily) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),

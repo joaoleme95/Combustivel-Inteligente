@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -28,6 +29,8 @@ import com.example.combusapp.R
 
 @Composable
 fun CalculaConsumo(quilometragem: String, litros: String, customFontFamily: FontFamily) {
+    val controleDoTeclado = LocalSoftwareKeyboardController.current
+    controleDoTeclado?.hide()
 
     val quilometragemInt = quilometragem.toIntOrNull() ?: 0
     val litrosInt = litros.toIntOrNull() ?: 1

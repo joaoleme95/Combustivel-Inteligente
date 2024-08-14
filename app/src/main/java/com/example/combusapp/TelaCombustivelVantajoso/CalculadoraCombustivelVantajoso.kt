@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -29,6 +30,8 @@ import java.util.Locale
 
 @Composable
 fun CalculaCombustivelVantajoso(valorEtanol: String, valorGasolina: String, customFontFamily: FontFamily) {
+    val controleDoTeclado = LocalSoftwareKeyboardController.current
+    controleDoTeclado?.hide()
 
     val valorEtanolDouble = valorEtanol.toDoubleOrNull() ?: 0.0
     val valorGasolinaDouble = valorGasolina.toDoubleOrNull() ?: 1.0
