@@ -1,8 +1,5 @@
-package com.example.combusapp
+package com.example.combusapp.TelaConsumo
 
-import android.app.Dialog
-import android.sax.TextElementListener
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -10,17 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -33,20 +27,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.combusapp.R
 
 
 val customFontFamily = FontFamily(
@@ -120,13 +112,13 @@ fun QuilometragemRodada(customFontFamily: FontFamily) {
             fontSize = 16.sp
         )
 
-        var text by rememberSaveable { mutableStateOf("") }
+        var quilometragem by rememberSaveable { mutableStateOf("") }
         TextField(
-            value = text,
+            value = quilometragem,
             onValueChange = { newText ->
                 // Filtrar apenas números
                 if (newText.all { it.isDigit() }) {
-                    text = newText
+                    quilometragem = newText
                 }
             },
             placeholder = { Text("Ex.: 500", fontFamily = customFontFamily) },
@@ -142,13 +134,14 @@ fun QuilometragemRodada(customFontFamily: FontFamily) {
                 )
             }
         )
-        LitrosGastos(customFontFamily)
+        LitrosGastos(customFontFamily, quilometragem)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LitrosGastos(customFontFamily: FontFamily) {
+fun LitrosGastos(customFontFamily: FontFamily, quilometragem: String) {
+    var chamaCalculo by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -160,13 +153,13 @@ fun LitrosGastos(customFontFamily: FontFamily) {
             fontSize = 16.sp
         )
 
-        var text by rememberSaveable { mutableStateOf("") }
+        var litrosGastos by rememberSaveable { mutableStateOf("") }
         TextField(
-            value = text,
+            value = litrosGastos,
             onValueChange = { newText ->
                 // Filtrar apenas números
                 if (newText.all { it.isDigit() }) {
-                    text = newText
+                    litrosGastos = newText
                 }
             },
             placeholder = { Text("Ex.: 30", fontFamily = customFontFamily) },
@@ -183,11 +176,19 @@ fun LitrosGastos(customFontFamily: FontFamily) {
             }
         )
         Button(
-            onClick = { /*onClick()*/ },
+            onClick = { chamaCalculo = true },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)) {
             Text("Calcular", fontFamily = customFontFamily)
+        }
+        Column(
+            Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (chamaCalculo) {
+                CalculaConsumo(quilometragem, litrosGastos, customFontFamily)
+            }
         }
     }
 }
