@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import com.example.combusapp.TelaCombustivelVantajoso.TelaCombustivelVantajoso
 import com.example.combusapp.TelaConsumo.TelaConsumo
 
 class MainActivity : ComponentActivity() {
@@ -63,7 +64,8 @@ fun CombusAppNavHost(customFontFamily: FontFamily, navController: NavHostControl
         composable("menu") { CombusAppInicial(customFontFamily, navController) }
         composable("consumo") { TelaConsumo(customFontFamily, navController) }
         composable("custo_viagem") { /*CustoViagemScreen()*/ }
-        composable("combustivel_vantajoso") { /*CombustivelVantajosoScreen()*/ }
+        composable("combustivel_vantajoso") { TelaCombustivelVantajoso(customFontFamily,
+            navController) }
     }
 }
 
@@ -168,7 +170,7 @@ fun OpcoesMenu(customFontFamily: FontFamily, navController: NavController) {
 
         // Terceira opção
         Button(
-            onClick = { /* Ação para a terceira opção */ },
+            onClick = { navController.navigate("combustivel_vantajoso") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),

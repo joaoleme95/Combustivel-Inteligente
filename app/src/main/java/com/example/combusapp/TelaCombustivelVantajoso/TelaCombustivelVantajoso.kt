@@ -1,4 +1,4 @@
-package com.example.combusapp.TelaConsumo
+package com.example.combusapp.TelaCombustivelVantajoso
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -39,89 +39,91 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.combusapp.R
+import com.example.combusapp.TelaConsumo.DialogExplicacaoConsumo
 
 
 val customFontFamily = FontFamily(
-        Font(R.font.worksans_normal, FontWeight.Normal),
-        Font(R.font.worksans_bold, FontWeight.Bold),
-        Font(R.font.worksans_italic, FontWeight.Normal, FontStyle.Italic),
-        Font(R.font.worksans_medium, FontWeight.Medium)
-    )
+    Font(R.font.worksans_normal, FontWeight.Normal),
+    Font(R.font.worksans_bold, FontWeight.Bold),
+    Font(R.font.worksans_italic, FontWeight.Normal, FontStyle.Italic),
+    Font(R.font.worksans_medium, FontWeight.Medium)
+)
 
-    @Composable
-    fun TelaConsumo(customFontFamily: FontFamily, navController: NavController) {
-        var mostrarDialog by remember { mutableStateOf(false) }
+@Composable
+fun TelaCombustivelVantajoso(customFontFamily: FontFamily, navController: NavController) {
+    var mostrarDialog by remember { mutableStateOf(false) }
 
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Voltar tela inicial",
-                        modifier = Modifier.clickable {
-                            navController.navigate("menu") {
-                                popUpTo("menu") { inclusive = true }
-                            }
+            Row {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Voltar tela inicial",
+                    modifier = Modifier.clickable {
+                        navController.navigate("menu") {
+                            popUpTo("menu") { inclusive = true }
                         }
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "Cálculo de consumo",
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 50.dp),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = "Explicação",
-                        modifier = Modifier.clickable {
-                            mostrarDialog = true
-                        }
-                    )
-                    if (mostrarDialog) {
-                        DialogExplicacaoConsumo(onDismiss = { mostrarDialog = false })
                     }
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "Etanol X Gasolina",
+                    fontFamily = customFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(bottom = 50.dp),
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = "Explicação",
+                    modifier = Modifier.clickable {
+                        mostrarDialog = true
+                    }
+                )
+                if (mostrarDialog) {
+                    DialogExplicacaoCombustivelVantajoso(onDismiss = { mostrarDialog = false })
                 }
             }
-            QuilometragemRodada(customFontFamily)
         }
+        PrecoEtanol(customFontFamily)
     }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuilometragemRodada(customFontFamily: FontFamily) {
+fun PrecoEtanol(customFontFamily: FontFamily) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
         Text(
-            text = "Quilometragem rodada",
+            text = "Preço do etanol",
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
         )
 
-        var quilometragem by rememberSaveable { mutableStateOf("") }
+        var valorEtanol by rememberSaveable { mutableStateOf("") }
         TextField(
-            value = quilometragem,
+            value = valorEtanol,
             onValueChange = { newText ->
-                // Filtrar apenas números
-                if (newText.all { it.isDigit() }) {
-                    quilometragem = newText
+                // Regex para aceitar números com até dois dígitos após o ponto
+                val regex = """^\d*\.?\d{0,2}$""".toRegex()
+                if (regex.matches(newText)) {
+                    valorEtanol = newText
                 }
             },
-            placeholder = { Text("Ex.: 500", fontFamily = customFontFamily) },
+            placeholder = { Text("Ex.: R$ 4,50", fontFamily = customFontFamily) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
@@ -129,40 +131,41 @@ fun QuilometragemRodada(customFontFamily: FontFamily) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             trailingIcon = {
                 Image(
-                    painter = painterResource(id = R.drawable.regua_cinza),
+                    painter = painterResource(id = R.drawable.bomba_combustivel_cinza),
                     contentDescription = "",
                 )
             }
         )
-        LitrosGastos(customFontFamily, quilometragem)
+        PrecoGasolina(customFontFamily, valorEtanol)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LitrosGastos(customFontFamily: FontFamily, quilometragem: String) {
+fun PrecoGasolina(customFontFamily: FontFamily, valorEtanol: String) {
     var chamaCalculo by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         Text(
-            text = "Litros gastos",
+            text = "Preço da gasolina",
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
         )
 
-        var litrosGastos by rememberSaveable { mutableStateOf("") }
+        var valorGasolina by rememberSaveable { mutableStateOf("") }
         TextField(
-            value = litrosGastos,
+            value = valorGasolina,
             onValueChange = { newText ->
-                // Filtrar apenas números
-                if (newText.all { it.isDigit() }) {
-                    litrosGastos = newText
+                // Regex para aceitar números com até dois dígitos após o ponto
+                val regex = """^\d*\.?\d{0,2}$""".toRegex()
+                if (regex.matches(newText)) {
+                    valorGasolina = newText
                 }
             },
-            placeholder = { Text("Ex.: 30", fontFamily = customFontFamily) },
+            placeholder = { Text("Ex.: R$ 4,50", fontFamily = customFontFamily) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
@@ -187,14 +190,14 @@ fun LitrosGastos(customFontFamily: FontFamily, quilometragem: String) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (chamaCalculo) {
-                CalculaConsumo(quilometragem, litrosGastos, customFontFamily)
+                CalculaCombustivelVantajoso(valorEtanol, valorGasolina, customFontFamily)
             }
         }
     }
 }
 
 @Composable
-fun DialogExplicacaoConsumo(onDismiss: () -> Unit) {
+fun DialogExplicacaoCombustivelVantajoso(onDismiss: () -> Unit) {
     AlertDialog(
         title = {
             Text(text = "Como usar a calculadora?",
@@ -202,13 +205,8 @@ fun DialogExplicacaoConsumo(onDismiss: () -> Unit) {
                 fontWeight = FontWeight.Bold)
         },
         text = {
-            Text(text = "Para usar esta calculadora basta colocar a " +
-                    "quantidade de quilomêtros percorridos e os litros" +
-                    " gastos. Para isso quando completar o tanque zere" +
-                    " a quilometragem no painel. Ande por algum tempo" +
-                    " e complete o tanque novamente. Coloque na calculadora" +
-                    " os valores de quilomêtros na hora do segundo abastecimento" +
-                    " e a quantidade de combustível abastecido na segunda vez.",
+            Text(text = "Para usar esta calculadora basta colocar o valor do etanol" +
+                    " e da gasolina nos respectivos lugares. O resultado dará a melhor opção.",
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium)
         },
@@ -227,7 +225,6 @@ fun DialogExplicacaoConsumo(onDismiss: () -> Unit) {
 
 
 
-
 @Preview
 @Composable
 fun PreviewDialog() {
@@ -238,12 +235,9 @@ fun PreviewDialog() {
         Font(R.font.worksans_medium, FontWeight.Medium)
     )
     Surface {
-        DialogExplicacaoConsumo(onDismiss = { /*mostrarDialog = false */})
+        DialogExplicacaoCombustivelVantajoso(onDismiss = { /*mostrarDialog = false */})
     }
 }
-
-
-
 
 @Preview
 @Composable
@@ -256,6 +250,6 @@ fun PreviewConsumo() {
     )
     Surface {
         val navController = rememberNavController()
-        TelaConsumo(customFontFamily, navController)
+        TelaCombustivelVantajoso(customFontFamily, navController)
     }
 }
