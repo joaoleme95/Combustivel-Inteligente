@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,7 +57,7 @@ class MainActivity : ComponentActivity() {
 fun CombusAppNavHost(customFontFamily: FontFamily, navController: NavHostController) {
     NavHost(navController = navController, startDestination = "menu") {
         composable("menu") { CombusAppInicial(customFontFamily, navController) }
-        composable("consumo") { TelaConsumo(customFontFamily) }
+        composable("consumo") { TelaConsumo(customFontFamily, navController) }
         composable("custo_viagem") { /*CustoViagemScreen()*/ }
         composable("combustivel_vantajoso") { /*CombustivelVantajosoScreen()*/ }
     }
@@ -71,13 +75,21 @@ fun CombusAppInicial(customFontFamily: FontFamily, navController: NavController)
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Combustível Inteligente",
-                fontFamily = customFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                modifier = Modifier.padding(bottom = 50.dp)
-            )
+            Row {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Configurações"
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "Combustível Inteligente",
+                    fontFamily = customFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(bottom = 50.dp)
+                )
+                Spacer(modifier = Modifier.weight(1f))
+            }
             Text(
                 text = "Bem-vindo!",
                 fontFamily = customFontFamily,
@@ -89,7 +101,7 @@ fun CombusAppInicial(customFontFamily: FontFamily, navController: NavController)
                 text = "Como podemos te ajudar hoje?",
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium,
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
         }
