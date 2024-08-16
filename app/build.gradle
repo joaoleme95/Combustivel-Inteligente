@@ -9,6 +9,10 @@ android {
     namespace 'com.example.combusapp'
     compileSdk 34
 
+    packaging {
+        jniLibs.pickFirsts.add("lib/**/libc++_shared.so")
+    }
+
     defaultConfig {
         applicationId "com.example.combusapp"
         minSdk 27
@@ -53,6 +57,10 @@ dependencies {
     implementation libs.retrofit
     implementation libs.converter.gson
     implementation libs.okhttp
+
+    //TomTom
+    version = "1.10.0"
+    implementation("com.tomtom.sdk.navigation:navigation-online:$version")
 
     implementation libs.core.ktx
     implementation libs.lifecycle.runtime.ktx
