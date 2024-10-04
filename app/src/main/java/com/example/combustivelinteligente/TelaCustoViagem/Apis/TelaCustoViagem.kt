@@ -1,5 +1,6 @@
-package com.example.combusapp.TelaCombustivelVantajoso
+package com.example.combustivelinteligente.TelaCustoViagem.Apis
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Info
@@ -32,14 +32,17 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.combusapp.R
-import com.example.combusapp.TelaConsumo.DialogExplicacaoConsumo
+import com.example.combustivelinteligente.DirectionsResponse
+import com.example.combustivelinteligente.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 val customFontFamily = FontFamily(
@@ -50,7 +53,7 @@ val customFontFamily = FontFamily(
 )
 
 @Composable
-fun TelaCombustivelVantajoso(customFontFamily: FontFamily, navController: NavController) {
+fun TelaCustoViagem(customFontFamily: FontFamily, navController: NavController) {
     var mostrarDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -75,7 +78,7 @@ fun TelaCombustivelVantajoso(customFontFamily: FontFamily, navController: NavCon
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "Etanol X Gasolina",
+                    text = "Custo de viagem",
                     fontFamily = customFontFamily,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
@@ -90,87 +93,78 @@ fun TelaCombustivelVantajoso(customFontFamily: FontFamily, navController: NavCon
                     }
                 )
                 if (mostrarDialog) {
-                    DialogExplicacaoCombustivelVantajoso(onDismiss = { mostrarDialog = false })
+                    DialogExplicacaoCustoViagem(onDismiss = { mostrarDialog = false })
                 }
             }
         }
-        PrecoEtanol(customFontFamily)
+        EnderecoSaida(customFontFamily)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrecoEtanol(customFontFamily: FontFamily) {
+fun EnderecoSaida(customFontFamily: FontFamily) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
         Text(
-            text = "Preço do etanol",
+            text = "Ponto de saída",
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
         )
 
-        var valorEtanol by rememberSaveable { mutableStateOf("") }
+        var enderecoSaida by rememberSaveable { mutableStateOf("") }
         TextField(
-            value = valorEtanol,
+            value = enderecoSaida,
             onValueChange = { newText ->
-                // Regex para aceitar números com até dois dígitos após o ponto
-                val regex = """^\d*\.?\d{0,2}$""".toRegex()
-                if (regex.matches(newText)) {
-                    valorEtanol = newText
-                }
+                enderecoSaida = newText
             },
-            placeholder = { Text("Ex.: R$ 4,50", fontFamily = customFontFamily) },
+            placeholder = { Text("", fontFamily = customFontFamily) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             trailingIcon = {
                 Image(
-                    painter = painterResource(id = R.drawable.bomba_combustivel_cinza),
+                    painter = painterResource(id = R.drawable.regua_cinza),
                     contentDescription = "",
                 )
             }
         )
-        PrecoGasolina(customFontFamily, valorEtanol)
+        EnderecoDestino(customFontFamily, enderecoSaida)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrecoGasolina(customFontFamily: FontFamily, valorEtanol: String) {
+fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String) {
     var chamaCalculo by remember { mutableStateOf(false) }
+    var result by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         Text(
-            text = "Preço da gasolina",
+            text = "Destino",
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
         )
 
-        var valorGasolina by rememberSaveable { mutableStateOf("") }
+        var enderecoDestino by rememberSaveable { mutableStateOf("") }
         TextField(
-            value = valorGasolina,
+            value = enderecoDestino,
             onValueChange = { newText ->
-                // Regex para aceitar números com até dois dígitos após o ponto
-                val regex = """^\d*\.?\d{0,2}$""".toRegex()
-                if (regex.matches(newText)) {
-                    valorGasolina = newText
-                }
+                enderecoDestino = newText
             },
-            placeholder = { Text("Ex.: R$ 6,70", fontFamily = customFontFamily) },
+            placeholder = { Text("", fontFamily = customFontFamily) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             trailingIcon = {
                 Image(
                     painter = painterResource(id = R.drawable.bomba_combustivel_cinza),
@@ -190,14 +184,56 @@ fun PrecoGasolina(customFontFamily: FontFamily, valorEtanol: String) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (chamaCalculo) {
-                CalculaCombustivelVantajoso(valorEtanol, valorGasolina, customFontFamily)
+                Log.i("testeApi", "Entrou no bloco 'chamaCalculo'")
+
+                // Verificando os endereços de entrada
+                Log.i("testeApi", "Endereço de saída: $enderecoSaida")
+                Log.i("testeApi", "Endereço de destino: $enderecoDestino")
+
+                // Chamando a função para obter a distância
+                RetrofitClient.instance.getDistancia(enderecoSaida, enderecoDestino, "AIzaSyDjXjLFnIMapGpUjNlUgL3qRu59UujLWGM")
+                    .enqueue(object : Callback<DirectionsResponse> {
+                        override fun onResponse(call: Call<DirectionsResponse>, response: Response<DirectionsResponse>) {
+                            if (response.isSuccessful) {
+                                Log.i("testeApi", "Recebeu uma resposta da API")
+
+                                val directions = response.body()
+                                val distance = directions?.routes?.get(0)?.legs?.get(0)?.distance?.text
+
+                                if (distance != null) {
+                                    Log.i("testeApi", "Distância extraída: $distance")
+                                    result = distance
+
+                                    // Verificando se o resultado foi preenchido corretamente
+                                    if (result.isNotEmpty()) {
+                                        // Aqui você pode atualizar a UI com o valor da distância
+                                        Log.i("testeApi", "Distância mostrada ao usuário: $result")
+                                    } else {
+                                        Log.e("testeApi", "O resultado está vazio, nada será exibido")
+                                    }
+                                } else {
+                                    Log.e("testeApi", "A distância não pôde ser extraída")
+                                }
+                            } else {
+                                Log.e("testeApi", "Erro na resposta da API: ${response.code()}")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
+                            Log.e("testeApi", "Erro na requisição: ${t.message}")
+                        }
+                    })
+
+                // Resetando o flag
+                chamaCalculo = false
             }
+
         }
     }
 }
 
 @Composable
-fun DialogExplicacaoCombustivelVantajoso(onDismiss: () -> Unit) {
+fun DialogExplicacaoCustoViagem(onDismiss: () -> Unit) {
     AlertDialog(
         title = {
             Text(text = "Como usar a calculadora?",
@@ -205,8 +241,13 @@ fun DialogExplicacaoCombustivelVantajoso(onDismiss: () -> Unit) {
                 fontWeight = FontWeight.Bold)
         },
         text = {
-            Text(text = "Para usar esta calculadora basta colocar o valor do etanol" +
-                    " e da gasolina nos respectivos lugares. O resultado dará a melhor opção.",
+            Text(text = "Para usar esta calculadora basta colocar a " +
+                    "quantidade de quilomêtros percorridos e os litros" +
+                    " gastos. Para isso quando completar o tanque zere" +
+                    " a quilometragem no painel. Ande por algum tempo" +
+                    " e complete o tanque novamente. Coloque na calculadora" +
+                    " os valores de quilomêtros na hora do segundo abastecimento" +
+                    " e a quantidade de combustível abastecido na segunda vez.",
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium)
         },
@@ -225,6 +266,7 @@ fun DialogExplicacaoCombustivelVantajoso(onDismiss: () -> Unit) {
 
 
 
+
 @Preview
 @Composable
 fun PreviewDialog() {
@@ -235,13 +277,16 @@ fun PreviewDialog() {
         Font(R.font.worksans_medium, FontWeight.Medium)
     )
     Surface {
-        DialogExplicacaoCombustivelVantajoso(onDismiss = { /*mostrarDialog = false */})
+        DialogExplicacaoCustoViagem(onDismiss = { /*mostrarDialog = false */})
     }
 }
 
+
+
+
 @Preview
 @Composable
-fun PreviewConsumo() {
+fun PreviewCustoViagem() {
     val customFontFamily = FontFamily(
         Font(R.font.worksans_normal, FontWeight.Normal),
         Font(R.font.worksans_bold, FontWeight.Bold),
@@ -250,6 +295,38 @@ fun PreviewConsumo() {
     )
     Surface {
         val navController = rememberNavController()
-        TelaCombustivelVantajoso(customFontFamily, navController)
+        TelaCustoViagem(customFontFamily, navController)
     }
 }
+/*@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustoViagemScreen(customFontFamily: androidx.compose.ui.text.font.FontFamily, navController: NavHostController) {
+    var origin by remember { mutableStateOf("") }
+    var destination by remember { mutableStateOf("") }
+    var result by remember { mutableStateOf("") }
+
+    Column {
+        TextField(
+            value = origin,
+            onValueChange = { origin = it },
+            label = { Text("Origem") }
+        )
+        TextField(
+            value = destination,
+            onValueChange = { destination = it },
+            label = { Text("Destino") }
+        )
+        Button(onClick = {
+            // Chama a função de cálculo de distância
+            val response = getDistanceBetweenLocations(origin, destination, "AIzaSyDjXjLFnIMapGpUjNlUgL3qRu59UujLWGM")
+            if (response != null) {
+                result = extractDistance(response)
+            }
+        }) {
+            Text("Calcular distância")
+        }
+        if (result.isNotEmpty()) {
+            Text("Distância: $result")
+        }
+    }
+}*/

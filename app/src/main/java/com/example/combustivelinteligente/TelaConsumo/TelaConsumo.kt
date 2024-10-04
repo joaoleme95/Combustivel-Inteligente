@@ -1,4 +1,4 @@
-package com.example.combusapp.TelaConsumo
+package com.example.combustivelinteligente.TelaConsumo
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

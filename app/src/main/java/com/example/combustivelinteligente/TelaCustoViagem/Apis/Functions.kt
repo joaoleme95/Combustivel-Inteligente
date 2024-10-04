@@ -1,8 +1,8 @@
-package com.example.combusapp.TelaCustoViagem.Apis
+package com.example.combustivelinteligente.TelaCustoViagem.Apis
 
 import android.util.Log
-import com.example.combusapp.DirectionsResponse
-import com.example.combusapp.RetrofitClient
+import com.example.combustivelinteligente.DirectionsResponse
+import com.example.combustivelinteligente.RetrofitClient
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback

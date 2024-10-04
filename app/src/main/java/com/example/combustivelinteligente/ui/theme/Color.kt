@@ -1,4 +1,4 @@
-package com.example.combusapp.ui.theme
+package com.example.combustivelinteligente.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

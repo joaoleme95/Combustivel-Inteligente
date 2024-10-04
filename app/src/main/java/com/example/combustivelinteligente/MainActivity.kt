@@ -1,4 +1,4 @@
-package com.example.combusapp
+package com.example.combustivelinteligente
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -36,9 +36,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
-import com.example.combusapp.TelaCombustivelVantajoso.TelaCombustivelVantajoso
-import com.example.combusapp.TelaConsumo.TelaConsumo
-import com.example.combusapp.TelaCustoViagem.Apis.TelaCustoViagem
+import com.example.combusapp.R
+import com.example.combustivelinteligente.TelaCombustivelVantajoso.TelaCombustivelVantajoso
+import com.example.combustivelinteligente.TelaConsumo.TelaConsumo
+import com.example.combustivelinteligente.TelaCustoViagem.Apis.TelaCustoViagem
 
 class MainActivity : ComponentActivity() {
 

@@ -1,4 +1,4 @@
-package com.example.combusapp
+package com.example.combustivelinteligente
 
 import org.junit.Test
 

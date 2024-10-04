@@ -1,4 +1,4 @@
-package com.example.combusapp.TelaCombustivelVantajoso
+package com.example.combustivelinteligente.TelaCombustivelVantajoso
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
