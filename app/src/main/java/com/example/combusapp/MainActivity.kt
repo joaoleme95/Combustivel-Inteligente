@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -39,6 +38,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.example.combusapp.TelaCombustivelVantajoso.TelaCombustivelVantajoso
 import com.example.combusapp.TelaConsumo.TelaConsumo
+import com.example.combusapp.TelaCustoViagem.Apis.TelaCustoViagem
 
 class MainActivity : ComponentActivity() {
 
@@ -63,7 +63,7 @@ fun CombusAppNavHost(customFontFamily: FontFamily, navController: NavHostControl
     NavHost(navController = navController, startDestination = "menu") {
         composable("menu") { CombusAppInicial(customFontFamily, navController) }
         composable("consumo") { TelaConsumo(customFontFamily, navController) }
-        composable("custo_viagem") { /*CustoViagemScreen()*/ }
+        composable("custo_viagem") { TelaCustoViagem(customFontFamily, navController) }
         composable("combustivel_vantajoso") { TelaCombustivelVantajoso(customFontFamily,
             navController) }
     }
@@ -147,7 +147,7 @@ fun OpcoesMenu(customFontFamily: FontFamily, navController: NavController) {
 
         // Segunda opção
         Button(
-            onClick = { /* Ação para a segunda opção */ },
+            onClick = { navController.navigate("custo_viagem") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
