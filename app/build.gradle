@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.combusapp'
+    namespace 'com.example.combustivelinteligente'
     compileSdk 34
 
     packaging {
@@ -14,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.combusapp"
+        applicationId "com.example.combustivelinteligente"
         minSdk 27
         targetSdk 34
         versionCode 1

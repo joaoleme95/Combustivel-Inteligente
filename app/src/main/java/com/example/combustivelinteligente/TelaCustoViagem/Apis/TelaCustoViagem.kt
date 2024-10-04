@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.combusapp.R
+import com.example.combustivelinteligente.R
 import com.example.combustivelinteligente.DirectionsResponse
 import com.example.combustivelinteligente.RetrofitClient
 import retrofit2.Call

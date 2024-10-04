@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.example.combusapp.R
+import com.example.combustivelinteligente.R
 
 @Composable
 fun CalculaConsumo(quilometragem: String, litros: String, customFontFamily: FontFamily) {
