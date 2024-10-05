@@ -133,7 +133,7 @@ fun EnderecoSaida(customFontFamily: FontFamily) {
             singleLine = true,
             trailingIcon = {
                 Image(
-                    painter = painterResource(id = R.drawable.regua_cinza),
+                    painter = painterResource(id = R.drawable.outline_circle_24),
                     contentDescription = "",
                 )
             }
@@ -170,7 +170,7 @@ fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String) {
             singleLine = true,
             trailingIcon = {
                 Image(
-                    painter = painterResource(id = R.drawable.bomba_combustivel_cinza),
+                    painter = painterResource(id = R.drawable.pin_localizacao),
                     contentDescription = "",
                 )
             }
@@ -347,7 +347,9 @@ fun DialogExplicacaoCustoViagem(onDismiss: () -> Unit) {
         text = {
             Text(text = "Para saber o custo total de combustível de uma viagem," +
                     " basta colocar os endereços de origem e destino," +
-                    " o rendimento do carro na estrada em km/l e o valor do combustível em questão.",
+                    " o rendimento do carro na estrada em km/l e o valor do combustível em questão." +
+                "\n\n O aplicativo utiliza a api do Google Maps para calcular a distância entre os pontos," +
+                    " então certifique-se de estar conectado a internet." ,
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium)
         },
