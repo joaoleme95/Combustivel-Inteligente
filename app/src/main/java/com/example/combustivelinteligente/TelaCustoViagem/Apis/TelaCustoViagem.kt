@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Info
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,6 +53,8 @@ val customFontFamily = FontFamily(
     Font(R.font.worksans_italic, FontWeight.Normal, FontStyle.Italic),
     Font(R.font.worksans_medium, FontWeight.Medium)
 )
+var resetarDados = false
+
 
 @Composable
 fun TelaCustoViagem(customFontFamily: FontFamily, navController: NavController) {
@@ -110,7 +114,7 @@ fun EnderecoSaida(customFontFamily: FontFamily) {
             .padding(horizontal = 24.dp)
     ) {
         Text(
-            text = "Ponto de saída",
+            text = "Endereço de saída",
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
@@ -134,6 +138,7 @@ fun EnderecoSaida(customFontFamily: FontFamily) {
                 )
             }
         )
+        if (resetarDados) enderecoSaida = ""
         EnderecoDestino(customFontFamily, enderecoSaida)
     }
 }
@@ -141,8 +146,6 @@ fun EnderecoSaida(customFontFamily: FontFamily) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String) {
-    var chamaCalculo by remember { mutableStateOf(false) }
-    var result by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -172,45 +175,147 @@ fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String) {
                 )
             }
         )
-        Button(
-            onClick = { chamaCalculo = true },
+        if (resetarDados) enderecoDestino = ""
+        ConsumoCarro(customFontFamily, enderecoSaida, enderecoDestino)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ConsumoCarro(customFontFamily: FontFamily, enderecoSaida: String, enderecoDestino: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = "Consumo do veículo em Km/L",
+            fontFamily = customFontFamily,
+            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp
+        )
+
+        var consumoAutomovel by rememberSaveable { mutableStateOf("") }
+        TextField(
+            value = consumoAutomovel,
+            onValueChange = { newText ->
+                val regex = """^\d*\.?\d{0,2}$""".toRegex()
+                if (regex.matches(newText)) {
+                    consumoAutomovel = newText
+                }
+            },
+            placeholder = { Text("Ex.: 12,5", fontFamily = customFontFamily) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp)) {
-            Text("Calcular", fontFamily = customFontFamily)
-        }
+                .padding(vertical = 16.dp),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            trailingIcon = {
+                Image(
+                    painter = painterResource(id = R.drawable.bomba_combustivel_cinza),
+                    contentDescription = "",
+                )
+            }
+        )
+        if (resetarDados) consumoAutomovel = ""
+        ValorCombustivel(customFontFamily, consumoAutomovel, enderecoSaida, enderecoDestino)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ValorCombustivel(
+    customFontFamily: FontFamily,
+    consumoAutomovel: String,
+    enderecoSaida: String,
+    enderecoDestino: String
+) {
+    var telaCusto by remember { mutableStateOf(false) } // Controla qual tela exibir
+    var chamaCalculo by remember { mutableStateOf(false) }
+    var distancia by remember { mutableStateOf("") } // Para armazenar a distância
+    var valorCombustivel by rememberSaveable { mutableStateOf("") }
+
+    if (telaCusto) {
+        // Tela de resultado de cálculo
         Column(
-            Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            CalculaCustoViagem(consumoAutomovel, valorCombustivel, distancia, customFontFamily)
+
+            // Botão para refazer o cálculo
+            Button(
+                onClick = {
+                    telaCusto = false // Volta para a tela inicial
+                    chamaCalculo = false
+                    resetarDados = true
+                    distancia = "" // Resetando a distância para nova tentativa
+                    valorCombustivel = "" // Limpar valor do combustível
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            ) {
+                Text("Refazer Cálculo", fontFamily = customFontFamily)
+            }
+        }
+    } else {
+        // Tela inicial para inserir dados
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Valor pago no combustível",
+                fontFamily = customFontFamily,
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp
+            )
+
+            TextField(
+                value = valorCombustivel,
+                onValueChange = { newText ->
+                    val regex = """^\d*\.?\d{0,2}$""".toRegex() // Limita a 2 casas decimais
+                    if (regex.matches(newText)) {
+                        valorCombustivel = newText
+                    }
+                },
+                placeholder = { Text("Ex.: 6,70", fontFamily = customFontFamily) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                trailingIcon = {
+                    Image(
+                        painter = painterResource(id = R.drawable.bomba_combustivel_cinza),
+                        contentDescription = "",
+                    )
+                }
+            )
+
+            Button(
+                onClick = { chamaCalculo = true },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            ) {
+                Text("Calcular", fontFamily = customFontFamily)
+            }
+
+            // Apenas chamar a API se o botão foi pressionado
             if (chamaCalculo) {
                 Log.i("testeApi", "Entrou no bloco 'chamaCalculo'")
-
-                // Verificando os endereços de entrada
-                Log.i("testeApi", "Endereço de saída: $enderecoSaida")
-                Log.i("testeApi", "Endereço de destino: $enderecoDestino")
 
                 // Chamando a função para obter a distância
                 RetrofitClient.instance.getDistancia(enderecoSaida, enderecoDestino, "AIzaSyDjXjLFnIMapGpUjNlUgL3qRu59UujLWGM")
                     .enqueue(object : Callback<DirectionsResponse> {
                         override fun onResponse(call: Call<DirectionsResponse>, response: Response<DirectionsResponse>) {
                             if (response.isSuccessful) {
-                                Log.i("testeApi", "Recebeu uma resposta da API")
-
                                 val directions = response.body()
-                                val distance = directions?.routes?.get(0)?.legs?.get(0)?.distance?.text
+                                distancia = directions?.routes?.get(0)?.legs?.get(0)?.distance?.value.toString()
 
-                                if (distance != null) {
-                                    Log.i("testeApi", "Distância extraída: $distance")
-                                    result = distance
-
-                                    // Verificando se o resultado foi preenchido corretamente
-                                    if (result.isNotEmpty()) {
-                                        // Aqui você pode atualizar a UI com o valor da distância
-                                        Log.i("testeApi", "Distância mostrada ao usuário: $result")
-                                    } else {
-                                        Log.e("testeApi", "O resultado está vazio, nada será exibido")
-                                    }
+                                if (distancia.isNotEmpty()) {
+                                    Log.i("testeApi", "Distância recebida da API: $distancia")
+                                    telaCusto = true // Muda para a tela de custo
                                 } else {
                                     Log.e("testeApi", "A distância não pôde ser extraída")
                                 }
@@ -227,7 +332,6 @@ fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String) {
                 // Resetando o flag
                 chamaCalculo = false
             }
-
         }
     }
 }
@@ -241,13 +345,9 @@ fun DialogExplicacaoCustoViagem(onDismiss: () -> Unit) {
                 fontWeight = FontWeight.Bold)
         },
         text = {
-            Text(text = "Para usar esta calculadora basta colocar a " +
-                    "quantidade de quilomêtros percorridos e os litros" +
-                    " gastos. Para isso quando completar o tanque zere" +
-                    " a quilometragem no painel. Ande por algum tempo" +
-                    " e complete o tanque novamente. Coloque na calculadora" +
-                    " os valores de quilomêtros na hora do segundo abastecimento" +
-                    " e a quantidade de combustível abastecido na segunda vez.",
+            Text(text = "Para saber o custo total de combustível de uma viagem," +
+                    " basta colocar os endereços de origem e destino," +
+                    " o rendimento do carro na estrada em km/l e o valor do combustível em questão.",
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium)
         },
