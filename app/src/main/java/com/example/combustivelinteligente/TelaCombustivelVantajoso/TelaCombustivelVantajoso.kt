@@ -181,7 +181,8 @@ fun PrecoGasolina(customFontFamily: FontFamily, valorEtanol: String) {
             onClick = { chamaCalculo = true },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp)) {
+                .padding(vertical = 12.dp)
+        ) {
             Text("Calcular", fontFamily = customFontFamily)
         }
         Column(
@@ -199,29 +200,34 @@ fun PrecoGasolina(customFontFamily: FontFamily, valorEtanol: String) {
 fun DialogExplicacaoCombustivelVantajoso(onDismiss: () -> Unit) {
     AlertDialog(
         title = {
-            Text(text = "Como usar a calculadora?",
+            Text(
+                text = "Como usar a calculadora?",
                 fontFamily = customFontFamily,
-                fontWeight = FontWeight.Bold)
+                fontWeight = FontWeight.Bold
+            )
         },
         text = {
-            Text(text = "Para usar esta calculadora basta colocar o valor do etanol" +
-                    " e da gasolina nos respectivos lugares. O resultado dará a melhor opção.",
+            Text(
+                text = "Para usar esta calculadora basta colocar o valor do etanol" +
+                        " e da gasolina nos respectivos lugares. O resultado dará a melhor opção.",
                 fontFamily = customFontFamily,
-                fontWeight = FontWeight.Medium)
+                fontWeight = FontWeight.Medium
+            )
         },
         onDismissRequest = { onDismiss() },
         confirmButton = {
             TextButton(
                 onClick = { onDismiss() }
             ) {
-                Text("Fechar",
+                Text(
+                    "Fechar",
                     fontFamily = customFontFamily,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
         },
     )
 }
-
 
 
 @Preview
@@ -234,7 +240,7 @@ fun PreviewDialog() {
         Font(R.font.worksans_medium, FontWeight.Medium)
     )
     Surface {
-        DialogExplicacaoCombustivelVantajoso(onDismiss = { /*mostrarDialog = false */})
+        DialogExplicacaoCombustivelVantajoso(onDismiss = { /*mostrarDialog = false */ })
     }
 }
 

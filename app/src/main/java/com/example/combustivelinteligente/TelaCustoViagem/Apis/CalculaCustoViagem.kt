@@ -27,7 +27,12 @@ import androidx.compose.ui.unit.sp
 import com.example.combustivelinteligente.R
 
 @Composable
-fun CalculaCustoViagem(consumo: String, valorCombustivel: String, distancia: String, customFontFamily: FontFamily) {
+fun CalculaCustoViagem(
+    consumo: String,
+    valorCombustivel: String,
+    distancia: String,
+    customFontFamily: FontFamily
+) {
     val controleDoTeclado = LocalSoftwareKeyboardController.current
     controleDoTeclado?.hide()
 
@@ -51,7 +56,7 @@ fun CalculaCustoViagem(consumo: String, valorCombustivel: String, distancia: Str
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            if (distancia == "0"){
+            if (distancia == "0") {
                 Text(
                     text = "Erro ao calcular distância",
                 )

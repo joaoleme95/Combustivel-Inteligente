@@ -67,53 +67,57 @@ val customFontFamily = FontFamily(
 )
 
 @Composable
-fun TelaCustoViagem(customFontFamily: FontFamily, navController: NavController, placesClient: PlacesClient) {
-        var mostrarDialog by remember { mutableStateOf(false) }
+fun TelaCustoViagem(
+    customFontFamily: FontFamily,
+    navController: NavController,
+    placesClient: PlacesClient
+) {
+    var mostrarDialog by remember { mutableStateOf(false) }
 
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Voltar tela inicial",
-                        modifier = Modifier.clickable {
-                            navController.navigate("menu") {
-                                popUpTo("menu") { inclusive = true }
-                            }
+            Row {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Voltar tela inicial",
+                    modifier = Modifier.clickable {
+                        navController.navigate("menu") {
+                            popUpTo("menu") { inclusive = true }
                         }
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "Custo de viagem",
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 50.dp),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = "Explicação",
-                        modifier = Modifier.clickable {
-                            mostrarDialog = true
-                        }
-                    )
-                    if (mostrarDialog) {
-                        DialogExplicacaoCustoViagem(onDismiss = { mostrarDialog = false })
                     }
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "Custo de viagem",
+                    fontFamily = customFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(bottom = 50.dp),
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = "Explicação",
+                    modifier = Modifier.clickable {
+                        mostrarDialog = true
+                    }
+                )
+                if (mostrarDialog) {
+                    DialogExplicacaoCustoViagem(onDismiss = { mostrarDialog = false })
                 }
             }
-            EnderecoSaida(customFontFamily, placesClient)
         }
+        EnderecoSaida(customFontFamily, placesClient)
     }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -215,7 +219,11 @@ fun EnderecoSaida(customFontFamily: FontFamily, placesClient: PlacesClient) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String, placesClient: PlacesClient) {
+fun EnderecoDestino(
+    customFontFamily: FontFamily,
+    enderecoSaida: String,
+    placesClient: PlacesClient
+) {
     var enderecoDestino by rememberSaveable { mutableStateOf("") }
     var predictionsDestino by remember { mutableStateOf(emptyList<AutocompletePrediction>()) }
 
@@ -433,12 +441,20 @@ fun ValorCombustivel(
                 Log.i("testeApi", "Entrou no bloco 'chamaCalculo'")
 
                 // Chamando a função para obter a distância
-                RetrofitClient.instance.getDistancia(enderecoSaida, enderecoDestino, "AIzaSyDjXjLFnIMapGpUjNlUgL3qRu59UujLWGM")
+                RetrofitClient.instance.getDistancia(
+                    enderecoSaida,
+                    enderecoDestino,
+                    "AIzaSyDjXjLFnIMapGpUjNlUgL3qRu59UujLWGM"
+                )
                     .enqueue(object : Callback<DirectionsResponse> {
-                        override fun onResponse(call: Call<DirectionsResponse>, response: Response<DirectionsResponse>) {
+                        override fun onResponse(
+                            call: Call<DirectionsResponse>,
+                            response: Response<DirectionsResponse>
+                        ) {
                             if (response.isSuccessful) {
                                 val directions = response.body()
-                                distancia = directions?.routes?.get(0)?.legs?.get(0)?.distance?.value.toString()
+                                distancia =
+                                    directions?.routes?.get(0)?.legs?.get(0)?.distance?.value.toString()
 
                                 if (distancia.isNotEmpty()) {
                                     Log.i("testeApi", "Distância recebida da API: $distancia")
@@ -469,33 +485,37 @@ fun ValorCombustivel(
 fun DialogExplicacaoCustoViagem(onDismiss: () -> Unit) {
     AlertDialog(
         title = {
-            Text(text = "Como usar a calculadora?",
+            Text(
+                text = "Como usar a calculadora?",
                 fontFamily = customFontFamily,
-                fontWeight = FontWeight.Bold)
+                fontWeight = FontWeight.Bold
+            )
         },
         text = {
-            Text(text = "Para saber o custo total de combustível de uma viagem," +
-                    " basta colocar os endereços de origem e destino," +
-                    " o rendimento do carro na estrada em km/l e o valor do combustível em questão." +
-                "\n\n O aplicativo utiliza a api do Google Maps para calcular a distância entre os pontos," +
-                    " então certifique-se de estar conectado a internet." ,
+            Text(
+                text = "Para saber o custo total de combustível de uma viagem," +
+                        " basta colocar os endereços de origem e destino," +
+                        " o rendimento do carro na estrada em km/l e o valor do combustível em questão." +
+                        "\n\n O aplicativo utiliza a api do Google Maps para calcular a distância entre os pontos," +
+                        " então certifique-se de estar conectado a internet.",
                 fontFamily = customFontFamily,
-                fontWeight = FontWeight.Medium)
+                fontWeight = FontWeight.Medium
+            )
         },
         onDismissRequest = { onDismiss() },
         confirmButton = {
             TextButton(
                 onClick = { onDismiss() }
             ) {
-                Text("Fechar",
+                Text(
+                    "Fechar",
                     fontFamily = customFontFamily,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
         },
     )
 }
-
-
 
 
 @Preview
@@ -508,11 +528,9 @@ fun PreviewDialog() {
         Font(R.font.worksans_medium, FontWeight.Medium)
     )
     Surface {
-        DialogExplicacaoCustoViagem(onDismiss = { /*mostrarDialog = false */})
+        DialogExplicacaoCustoViagem(onDismiss = { /*mostrarDialog = false */ })
     }
 }
-
-
 
 
 @Preview
@@ -526,8 +544,8 @@ fun PreviewCustoViagem() {
     )
     Surface {
         val navController = rememberNavController()
-/*
-        TelaCustoViagem(customFontFamily, navController)
-*/
+        /*
+                TelaCustoViagem(customFontFamily, navController)
+        */
     }
 }

@@ -51,18 +51,21 @@ fun CalculaConsumo(quilometragem: String, litros: String, customFontFamily: Font
         ) {
             Text(
                 text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Medium
-                    )
+                    withStyle(
+                        style = SpanStyle(
+                            fontFamily = customFontFamily,
+                            fontWeight = FontWeight.Medium
+                        )
                     ) {
                         append("Seu veículo faz em média:\n")
                     }
-                    withStyle(style = SpanStyle(
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )) {
+                    withStyle(
+                        style = SpanStyle(
+                            fontFamily = customFontFamily,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
+                        )
+                    ) {
                         append("\n$consumo Km/l")
                     }
                 },

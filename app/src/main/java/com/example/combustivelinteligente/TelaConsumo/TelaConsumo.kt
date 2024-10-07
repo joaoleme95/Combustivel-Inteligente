@@ -42,60 +42,60 @@ import com.example.combustivelinteligente.R
 
 
 val customFontFamily = FontFamily(
-        Font(R.font.worksans_normal, FontWeight.Normal),
-        Font(R.font.worksans_bold, FontWeight.Bold),
-        Font(R.font.worksans_italic, FontWeight.Normal, FontStyle.Italic),
-        Font(R.font.worksans_medium, FontWeight.Medium)
-    )
+    Font(R.font.worksans_normal, FontWeight.Normal),
+    Font(R.font.worksans_bold, FontWeight.Bold),
+    Font(R.font.worksans_italic, FontWeight.Normal, FontStyle.Italic),
+    Font(R.font.worksans_medium, FontWeight.Medium)
+)
 
-    @Composable
-    fun TelaConsumo(customFontFamily: FontFamily, navController: NavController) {
-        var mostrarDialog by remember { mutableStateOf(false) }
+@Composable
+fun TelaConsumo(customFontFamily: FontFamily, navController: NavController) {
+    var mostrarDialog by remember { mutableStateOf(false) }
 
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Voltar tela inicial",
-                        modifier = Modifier.clickable {
-                            navController.navigate("menu") {
-                                popUpTo("menu") { inclusive = true }
-                            }
+            Row {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Voltar tela inicial",
+                    modifier = Modifier.clickable {
+                        navController.navigate("menu") {
+                            popUpTo("menu") { inclusive = true }
                         }
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "Cálculo de consumo",
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 50.dp),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = "Explicação",
-                        modifier = Modifier.clickable {
-                            mostrarDialog = true
-                        }
-                    )
-                    if (mostrarDialog) {
-                        DialogExplicacaoConsumo(onDismiss = { mostrarDialog = false })
                     }
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "Cálculo de consumo",
+                    fontFamily = customFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(bottom = 50.dp),
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = "Explicação",
+                    modifier = Modifier.clickable {
+                        mostrarDialog = true
+                    }
+                )
+                if (mostrarDialog) {
+                    DialogExplicacaoConsumo(onDismiss = { mostrarDialog = false })
                 }
             }
-            QuilometragemRodada(customFontFamily)
         }
+        QuilometragemRodada(customFontFamily)
     }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -179,7 +179,8 @@ fun LitrosGastos(customFontFamily: FontFamily, quilometragem: String) {
             onClick = { chamaCalculo = true },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp)) {
+                .padding(vertical = 12.dp)
+        ) {
             Text("Calcular", fontFamily = customFontFamily)
         }
         Column(
@@ -197,35 +198,39 @@ fun LitrosGastos(customFontFamily: FontFamily, quilometragem: String) {
 fun DialogExplicacaoConsumo(onDismiss: () -> Unit) {
     AlertDialog(
         title = {
-            Text(text = "Como usar a calculadora?",
+            Text(
+                text = "Como usar a calculadora?",
                 fontFamily = customFontFamily,
-                fontWeight = FontWeight.Bold)
+                fontWeight = FontWeight.Bold
+            )
         },
         text = {
-            Text(text = "Para usar esta calculadora basta colocar a " +
-                    "quantidade de quilomêtros percorridos e os litros" +
-                    " gastos. Para isso quando completar o tanque zere" +
-                    " a quilometragem no painel. Ande por algum tempo" +
-                    " e complete o tanque novamente. Coloque na calculadora" +
-                    " os valores de quilomêtros na hora do segundo abastecimento" +
-                    " e a quantidade de combustível abastecido na segunda vez.",
+            Text(
+                text = "Para usar esta calculadora basta colocar a " +
+                        "quantidade de quilomêtros percorridos e os litros" +
+                        " gastos. Para isso quando completar o tanque zere" +
+                        " a quilometragem no painel. Ande por algum tempo" +
+                        " e complete o tanque novamente. Coloque na calculadora" +
+                        " os valores de quilomêtros na hora do segundo abastecimento" +
+                        " e a quantidade de combustível abastecido na segunda vez.",
                 fontFamily = customFontFamily,
-                fontWeight = FontWeight.Medium)
+                fontWeight = FontWeight.Medium
+            )
         },
         onDismissRequest = { onDismiss() },
         confirmButton = {
             TextButton(
                 onClick = { onDismiss() }
             ) {
-                Text("Fechar",
+                Text(
+                    "Fechar",
                     fontFamily = customFontFamily,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
         },
     )
 }
-
-
 
 
 @Preview
@@ -238,11 +243,9 @@ fun PreviewDialog() {
         Font(R.font.worksans_medium, FontWeight.Medium)
     )
     Surface {
-        DialogExplicacaoConsumo(onDismiss = { /*mostrarDialog = false */})
+        DialogExplicacaoConsumo(onDismiss = { /*mostrarDialog = false */ })
     }
 }
-
-
 
 
 @Preview

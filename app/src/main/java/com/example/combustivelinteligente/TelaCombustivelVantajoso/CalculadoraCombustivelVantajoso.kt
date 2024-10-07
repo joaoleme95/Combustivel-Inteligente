@@ -29,7 +29,11 @@ import java.util.Locale
 
 
 @Composable
-fun CalculaCombustivelVantajoso(valorEtanol: String, valorGasolina: String, customFontFamily: FontFamily) {
+fun CalculaCombustivelVantajoso(
+    valorEtanol: String,
+    valorGasolina: String,
+    customFontFamily: FontFamily
+) {
     val controleDoTeclado = LocalSoftwareKeyboardController.current
     controleDoTeclado?.hide()
 
@@ -67,19 +71,23 @@ fun CalculaCombustivelVantajoso(valorEtanol: String, valorGasolina: String, cust
         ) {
             Text(
                 text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Medium
-                    )
+                    withStyle(
+                        style = SpanStyle(
+                            fontFamily = customFontFamily,
+                            fontWeight = FontWeight.Medium
+                        )
                     ) {
-                        append("O resultado deu $resultadoFormatado, que é $textoResultado de 0,73, " +
-                                "portanto o combustível vantajoso é:\n")
+                        append(
+                            "O resultado deu $resultadoFormatado, que é $textoResultado de 0,73, " +
+                                    "portanto o combustível vantajoso é:\n"
+                        )
                     }
-                    withStyle(style = SpanStyle(
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
+                    withStyle(
+                        style = SpanStyle(
+                            fontFamily = customFontFamily,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
+                        )
                     ) {
                         append("\n$combusivelVantajoso")
                     }

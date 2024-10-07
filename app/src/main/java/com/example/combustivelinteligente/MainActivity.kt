@@ -64,13 +64,27 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CombusAppNavHost(customFontFamily: FontFamily, navController: NavHostController, placesClient: PlacesClient) {
+fun CombusAppNavHost(
+    customFontFamily: FontFamily,
+    navController: NavHostController,
+    placesClient: PlacesClient
+) {
     NavHost(navController = navController, startDestination = "menu") {
         composable("menu") { CombusAppInicial(customFontFamily, navController) }
         composable("consumo") { TelaConsumo(customFontFamily, navController) }
-        composable("custo_viagem") { TelaCustoViagem(customFontFamily, navController, placesClient) }
-        composable("combustivel_vantajoso") { TelaCombustivelVantajoso(customFontFamily,
-            navController) }
+        composable("custo_viagem") {
+            TelaCustoViagem(
+                customFontFamily,
+                navController,
+                placesClient
+            )
+        }
+        composable("combustivel_vantajoso") {
+            TelaCombustivelVantajoso(
+                customFontFamily,
+                navController
+            )
+        }
     }
 }
 
@@ -197,7 +211,6 @@ fun OpcoesMenu(customFontFamily: FontFamily, navController: NavController) {
         }
     }
 }
-
 
 
 @Preview
