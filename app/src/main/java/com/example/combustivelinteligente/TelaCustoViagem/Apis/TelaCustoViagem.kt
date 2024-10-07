@@ -1,6 +1,7 @@
 package com.example.combustivelinteligente.TelaCustoViagem.Apis
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,6 +30,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -63,57 +65,55 @@ val customFontFamily = FontFamily(
     Font(R.font.worksans_italic, FontWeight.Normal, FontStyle.Italic),
     Font(R.font.worksans_medium, FontWeight.Medium)
 )
-var resetarDados = false
-
 
 @Composable
 fun TelaCustoViagem(customFontFamily: FontFamily, navController: NavController, placesClient: PlacesClient) {
-    var mostrarDialog by remember { mutableStateOf(false) }
+        var mostrarDialog by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Voltar tela inicial",
-                    modifier = Modifier.clickable {
-                        navController.navigate("menu") {
-                            popUpTo("menu") { inclusive = true }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Voltar tela inicial",
+                        modifier = Modifier.clickable {
+                            navController.navigate("menu") {
+                                popUpTo("menu") { inclusive = true }
+                            }
                         }
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = "Custo de viagem",
+                        fontFamily = customFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(bottom = 50.dp),
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(
+                        imageVector = Icons.Outlined.Info,
+                        contentDescription = "Explicação",
+                        modifier = Modifier.clickable {
+                            mostrarDialog = true
+                        }
+                    )
+                    if (mostrarDialog) {
+                        DialogExplicacaoCustoViagem(onDismiss = { mostrarDialog = false })
                     }
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = "Custo de viagem",
-                    fontFamily = customFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(bottom = 50.dp),
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    imageVector = Icons.Outlined.Info,
-                    contentDescription = "Explicação",
-                    modifier = Modifier.clickable {
-                        mostrarDialog = true
-                    }
-                )
-                if (mostrarDialog) {
-                    DialogExplicacaoCustoViagem(onDismiss = { mostrarDialog = false })
                 }
             }
+            EnderecoSaida(customFontFamily, placesClient)
         }
-        EnderecoSaida(customFontFamily, placesClient)
     }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -178,7 +178,9 @@ fun EnderecoSaida(customFontFamily: FontFamily, placesClient: PlacesClient) {
                         .fillMaxWidth()
                         .clickable(
                             onClick = {
-                                enderecoSaida = prediction.getFullText(null).toString()
+                                enderecoSaida = prediction
+                                    .getFullText(null)
+                                    .toString()
                                 predictionsSaida = emptyList()
                             },
                             indication = rememberRipple(bounded = true),
@@ -207,8 +209,6 @@ fun EnderecoSaida(customFontFamily: FontFamily, placesClient: PlacesClient) {
                 }
             }
         }
-
-        if (resetarDados) enderecoSaida = ""
         EnderecoDestino(customFontFamily, enderecoSaida, placesClient)
     }
 }
@@ -275,7 +275,9 @@ fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String, placesC
                         .fillMaxWidth()
                         .clickable(
                             onClick = {
-                                enderecoDestino = prediction.getFullText(null).toString()
+                                enderecoDestino = prediction
+                                    .getFullText(null)
+                                    .toString()
                                 predictionsDestino = emptyList()
                             },
                             indication = rememberRipple(bounded = true),
@@ -305,7 +307,6 @@ fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String, placesC
             }
         }
 
-        if (resetarDados) enderecoDestino = ""
         ConsumoCarro(customFontFamily, enderecoSaida, enderecoDestino)
     }
 }
@@ -346,7 +347,6 @@ fun ConsumoCarro(customFontFamily: FontFamily, enderecoSaida: String, enderecoDe
                 )
             }
         )
-        if (resetarDados) consumoAutomovel = ""
         ValorCombustivel(customFontFamily, consumoAutomovel, enderecoSaida, enderecoDestino)
     }
 }
@@ -377,9 +377,6 @@ fun ValorCombustivel(
                 onClick = {
                     telaCusto = false // Volta para a tela inicial
                     chamaCalculo = false
-                    resetarDados = true
-                    distancia = "" // Resetando a distância para nova tentativa
-                    valorCombustivel = "" // Limpar valor do combustível
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -456,6 +453,8 @@ fun ValorCombustivel(
 
                         override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
                             Log.e("testeApi", "Erro na requisição: ${t.message}")
+                            distancia = "0"
+                            telaCusto = true
                         }
                     })
 

@@ -87,10 +87,10 @@ fun CombusAppInicial(customFontFamily: FontFamily, navController: NavController)
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row {
-                Icon(
+                /*Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "Configurações"
-                )
+                )*/
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = "Combustível Inteligente",

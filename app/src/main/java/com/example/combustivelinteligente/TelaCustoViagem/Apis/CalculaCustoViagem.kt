@@ -51,42 +51,52 @@ fun CalculaCustoViagem(consumo: String, valorCombustivel: String, distancia: Str
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Medium
-                    )
-                    ) {
-                        append("Quilometragem do trajeto:\n")
-                    }
-                    withStyle(style = SpanStyle(
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
-                    ) {
-                        append(String.format("\n%.0f Km\n", distanciaKm))
-                    }
-                    withStyle(style = SpanStyle(
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Medium
-                    )
-                    ) {
-                        append("\nA viagem custará aproximadamente:\n")
-                    }
-                    withStyle(style = SpanStyle(
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
-                    ) {
-                        append(String.format("\nR$ %.2f", gastoViagem).replace(".", ","))
-                    }
-                },
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center
-            )
+            if (distancia == "0"){
+                Text(
+                    text = "Erro ao calcular distância",
+                )
+            } else {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                fontFamily = customFontFamily,
+                                fontWeight = FontWeight.Medium
+                            )
+                        ) {
+                            append("Quilometragem do trajeto:\n")
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                fontFamily = customFontFamily,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
+                        ) {
+                            append(String.format("\n%.0f Km\n", distanciaKm))
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                fontFamily = customFontFamily,
+                                fontWeight = FontWeight.Medium
+                            )
+                        ) {
+                            append("\nA viagem custará aproximadamente:\n")
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                fontFamily = customFontFamily,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
+                        ) {
+                            append(String.format("\nR$ %.2f", gastoViagem).replace(".", ","))
+                        }
+                    },
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
