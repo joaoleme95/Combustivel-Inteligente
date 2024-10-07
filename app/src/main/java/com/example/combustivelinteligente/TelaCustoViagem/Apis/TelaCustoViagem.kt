@@ -2,20 +2,27 @@ package com.example.combustivelinteligente.TelaCustoViagem.Apis
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -42,6 +49,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.combustivelinteligente.R
 import com.example.combustivelinteligente.DirectionsResponse
 import com.example.combustivelinteligente.RetrofitClient
+import com.google.android.libraries.places.api.model.AutocompletePrediction
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -57,7 +67,7 @@ var resetarDados = false
 
 
 @Composable
-fun TelaCustoViagem(customFontFamily: FontFamily, navController: NavController) {
+fun TelaCustoViagem(customFontFamily: FontFamily, navController: NavController, placesClient: PlacesClient) {
     var mostrarDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -101,13 +111,16 @@ fun TelaCustoViagem(customFontFamily: FontFamily, navController: NavController) 
                 }
             }
         }
-        EnderecoSaida(customFontFamily)
+        EnderecoSaida(customFontFamily, placesClient)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EnderecoSaida(customFontFamily: FontFamily) {
+fun EnderecoSaida(customFontFamily: FontFamily, placesClient: PlacesClient) {
+    var enderecoSaida by rememberSaveable { mutableStateOf("") }
+    var predictionsSaida by remember { mutableStateOf(emptyList<AutocompletePrediction>()) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -120,11 +133,25 @@ fun EnderecoSaida(customFontFamily: FontFamily) {
             fontSize = 16.sp
         )
 
-        var enderecoSaida by rememberSaveable { mutableStateOf("") }
         TextField(
             value = enderecoSaida,
             onValueChange = { newText ->
                 enderecoSaida = newText
+                if (newText.isNotEmpty()) {
+                    val request = FindAutocompletePredictionsRequest.builder()
+                        .setQuery(newText)
+                        .build()
+
+                    placesClient.findAutocompletePredictions(request)
+                        .addOnSuccessListener { response ->
+                            predictionsSaida = response.autocompletePredictions
+                        }
+                        .addOnFailureListener { exception ->
+                            // Handle error
+                        }
+                } else {
+                    predictionsSaida = emptyList()
+                }
             },
             placeholder = { Text("", fontFamily = customFontFamily) },
             modifier = Modifier
@@ -138,14 +165,60 @@ fun EnderecoSaida(customFontFamily: FontFamily) {
                 )
             }
         )
+
+        // Mostrar as previsões de autocomplete
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            items(predictionsSaida) { prediction ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            onClick = {
+                                enderecoSaida = prediction.getFullText(null).toString()
+                                predictionsSaida = emptyList()
+                            },
+                            indication = rememberRipple(bounded = true),
+                            interactionSource = remember { MutableInteractionSource() }
+                        )
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(vertical = 12.dp, horizontal = 16.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = prediction.getFullText(null).toString(),
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    Divider( // Linha separadora entre os itens
+                        modifier = Modifier.padding(top = 12.dp),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                        thickness = 1.dp
+                    )
+                }
+            }
+        }
+
         if (resetarDados) enderecoSaida = ""
-        EnderecoDestino(customFontFamily, enderecoSaida)
+        EnderecoDestino(customFontFamily, enderecoSaida, placesClient)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String) {
+fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String, placesClient: PlacesClient) {
+    var enderecoDestino by rememberSaveable { mutableStateOf("") }
+    var predictionsDestino by remember { mutableStateOf(emptyList<AutocompletePrediction>()) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -157,11 +230,25 @@ fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String) {
             fontSize = 16.sp
         )
 
-        var enderecoDestino by rememberSaveable { mutableStateOf("") }
         TextField(
             value = enderecoDestino,
             onValueChange = { newText ->
                 enderecoDestino = newText
+                if (newText.isNotEmpty()) {
+                    val request = FindAutocompletePredictionsRequest.builder()
+                        .setQuery(newText)
+                        .build()
+
+                    placesClient.findAutocompletePredictions(request)
+                        .addOnSuccessListener { response ->
+                            predictionsDestino = response.autocompletePredictions
+                        }
+                        .addOnFailureListener { exception ->
+                            // Handle error
+                        }
+                } else {
+                    predictionsDestino = emptyList()
+                }
             },
             placeholder = { Text("", fontFamily = customFontFamily) },
             modifier = Modifier
@@ -175,6 +262,49 @@ fun EnderecoDestino(customFontFamily: FontFamily, enderecoSaida: String) {
                 )
             }
         )
+
+        // Mostrar as previsões de autocomplete
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            items(predictionsDestino) { prediction ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            onClick = {
+                                enderecoDestino = prediction.getFullText(null).toString()
+                                predictionsDestino = emptyList()
+                            },
+                            indication = rememberRipple(bounded = true),
+                            interactionSource = remember { MutableInteractionSource() }
+                        )
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(vertical = 12.dp, horizontal = 16.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = prediction.getFullText(null).toString(),
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    Divider(
+                        modifier = Modifier.padding(top = 12.dp),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                        thickness = 1.dp
+                    )
+                }
+            }
+        }
+
         if (resetarDados) enderecoDestino = ""
         ConsumoCarro(customFontFamily, enderecoSaida, enderecoDestino)
     }
@@ -397,38 +527,8 @@ fun PreviewCustoViagem() {
     )
     Surface {
         val navController = rememberNavController()
+/*
         TelaCustoViagem(customFontFamily, navController)
+*/
     }
 }
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CustoViagemScreen(customFontFamily: androidx.compose.ui.text.font.FontFamily, navController: NavHostController) {
-    var origin by remember { mutableStateOf("") }
-    var destination by remember { mutableStateOf("") }
-    var result by remember { mutableStateOf("") }
-
-    Column {
-        TextField(
-            value = origin,
-            onValueChange = { origin = it },
-            label = { Text("Origem") }
-        )
-        TextField(
-            value = destination,
-            onValueChange = { destination = it },
-            label = { Text("Destino") }
-        )
-        Button(onClick = {
-            // Chama a função de cálculo de distância
-            val response = getDistanceBetweenLocations(origin, destination, "AIzaSyDjXjLFnIMapGpUjNlUgL3qRu59UujLWGM")
-            if (response != null) {
-                result = extractDistance(response)
-            }
-        }) {
-            Text("Calcular distância")
-        }
-        if (result.isNotEmpty()) {
-            Text("Distância: $result")
-        }
-    }
-}*/

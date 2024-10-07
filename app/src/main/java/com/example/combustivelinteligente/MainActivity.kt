@@ -40,6 +40,8 @@ import com.example.combustivelinteligente.R
 import com.example.combustivelinteligente.TelaCombustivelVantajoso.TelaCombustivelVantajoso
 import com.example.combustivelinteligente.TelaConsumo.TelaConsumo
 import com.example.combustivelinteligente.TelaCustoViagem.Apis.TelaCustoViagem
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.net.PlacesClient
 
 class MainActivity : ComponentActivity() {
 
@@ -52,19 +54,21 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Places.initialize(applicationContext, "AIzaSyDjXjLFnIMapGpUjNlUgL3qRu59UujLWGM")
+        val placesClient = Places.createClient(this)
         setContent {
             val navController = rememberNavController()
-            CombusAppNavHost(customFontFamily, navController = navController)
+            CombusAppNavHost(customFontFamily, navController = navController, placesClient)
         }
     }
 }
 
 @Composable
-fun CombusAppNavHost(customFontFamily: FontFamily, navController: NavHostController) {
+fun CombusAppNavHost(customFontFamily: FontFamily, navController: NavHostController, placesClient: PlacesClient) {
     NavHost(navController = navController, startDestination = "menu") {
         composable("menu") { CombusAppInicial(customFontFamily, navController) }
         composable("consumo") { TelaConsumo(customFontFamily, navController) }
-        composable("custo_viagem") { TelaCustoViagem(customFontFamily, navController) }
+        composable("custo_viagem") { TelaCustoViagem(customFontFamily, navController, placesClient) }
         composable("combustivel_vantajoso") { TelaCombustivelVantajoso(customFontFamily,
             navController) }
     }

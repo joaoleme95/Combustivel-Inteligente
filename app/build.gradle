@@ -72,9 +72,8 @@ dependencies {
     implementation libs.converter.gson
     implementation libs.okhttp
 
-    //TomTom
-    version = "1.10.0"
-    implementation("com.tomtom.sdk.navigation:navigation-online:$version")
+    //Maps Autocomplete
+    implementation libs.places
 
     implementation libs.core.ktx
     implementation libs.lifecycle.runtime.ktx
