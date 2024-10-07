@@ -27,7 +27,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.combustivelinteligente"
+        applicationId "com.combusapp.combustivelinteligente"
         minSdk 27
         targetSdk 34
         versionCode 1
