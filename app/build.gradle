@@ -38,11 +38,15 @@ android {
             useSupportLibrary true
         }
         signingConfig signingConfigs.release
+        buildConfigField "String", "GOOGLE_API_KEY", "\"${GOOGLE_API_KEY}\""
     }
 
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -55,6 +59,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.3'

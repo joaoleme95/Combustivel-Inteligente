@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Places.initialize(applicationContext, "AIzaSyDjXjLFnIMapGpUjNlUgL3qRu59UujLWGM")
+        Places.initialize(applicationContext, BuildConfig.GOOGLE_API_KEY)
         val placesClient = Places.createClient(this)
         setContent {
             val navController = rememberNavController()

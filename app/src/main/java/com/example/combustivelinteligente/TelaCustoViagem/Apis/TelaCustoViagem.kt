@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.combustivelinteligente.BuildConfig
 import com.example.combustivelinteligente.R
 import com.example.combustivelinteligente.DirectionsResponse
 import com.example.combustivelinteligente.RetrofitClient
@@ -151,7 +152,6 @@ fun EnderecoSaida(customFontFamily: FontFamily, placesClient: PlacesClient) {
                             predictionsSaida = response.autocompletePredictions
                         }
                         .addOnFailureListener { exception ->
-                            // Handle error
                         }
                 } else {
                     predictionsSaida = emptyList()
@@ -444,7 +444,7 @@ fun ValorCombustivel(
                 RetrofitClient.instance.getDistancia(
                     enderecoSaida,
                     enderecoDestino,
-                    "AIzaSyDjXjLFnIMapGpUjNlUgL3qRu59UujLWGM"
+                    BuildConfig.GOOGLE_API_KEY
                 )
                     .enqueue(object : Callback<DirectionsResponse> {
                         override fun onResponse(
