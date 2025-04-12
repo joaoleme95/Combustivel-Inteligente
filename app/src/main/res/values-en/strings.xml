@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Combustível Inteligente</string>
+    <string name="bem_vindo">Welcome!</string>
+    <string name="frase_inicial">How can we help you today?</string>
+    <string name="consumo">Consumption</string>
+    <string name="custo_viagem">Trip Cost</string>
+    <string name="combustivel_vantajoso">Best Fuel Option</string>
+    <string name="calcular">Calculate</string>
+    <string name="fechar">Close</string>
+    <string name="como_usar_calculadora">How to use the calculator?</string>
+
+    <!-- Consumption Screen -->
+    <string name="calculo_consumo">Fuel consumption calculation</string>
+    <string name="quilometragem_rodada">Distance traveled</string>
+    <string name="litros_gastos">Liters used</string>
+    <string name="explicacao_calculadora">
+        How to use this calculator:\n
+        1. Fill up your vehicle\'s tank and reset the trip odometer.\n
+        2. Drive normally for a few days.\n
+        3. When you fill the tank again:\n
+        - Note the current distance traveled (since the reset).\n
+        - Note the number of liters refueled.\n
+        4. Enter these two values into the calculator:\n
+        - Kilometers traveled\n
+        - Liters refueled\n
+        The app will automatically calculate your vehicle\'s average fuel consumption.
+    </string>
+
+    <!--Trip cost screen-->
+    <string name="calculo_viagem">Trip cost calculation</string>
+    <string name="endereco_partida">Starting point</string>
+    <string name="destino">Destination</string>
+    <string name="consumo_em_km">Vehicle consumption in Km/L</string>
+    <string name="valor_pago">Fuel price</string>
+    <string name="explicacao_viagem">To calculate the total fuel cost of a
+    trip, simply enter the starting and destination addresses, the vehicle\'s
+    highway fuel efficiency in Km/L, and the fuel price.\n\n
+    The app uses the Google Maps API to calculate the distance
+    between addresses, so make sure you\'re connected to the internet
+    </string>
+
+    <!--Best fuel screen-->
+    <string name="etanolxgasolina">Ethanol vs Gasoline</string>
+    <string name="preco_etanol">Ethanol price</string>
+    <string name="preco_gasolina">Gasoline price</string>
+    <string name="explicacao_combustivel">To use this calculator, just enter
+    the ethanol and gasoline prices. The app will show you the best option.
+    </string>
+
+    <!--Results-->
+    <string name="resultado_consumo">Your vehicle averages:\n</string>
+    <string name="quilometragem_trajeto">Route mileage:\n</string>
+    <string name="resultado_viagem">\nThe trip will cost approximately:\n</string>
+
+    <string name="etanol">Ethanol</string>
+    <string name="gasolina">Gasoline</string>
+    <string name="abaixo">below</string>
+    <string name="acima">above</string>
+    <string name="texto_resultado_combustivel">The result was %1$s,
+        which is %2$s 0.73, therefore the most cost-effective fuel is:</string>
+
+    <string name="erro_viagem">Error calculating distance</string>
+
+</resources>

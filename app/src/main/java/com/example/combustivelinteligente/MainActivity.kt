@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -109,7 +110,7 @@ fun CombusAppInicial(customFontFamily: FontFamily, navController: NavController)
                 )*/
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "Combustível Inteligente",
+                    text = stringResource(R.string.app_name),
                     fontFamily = customFontFamily,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
@@ -118,14 +119,14 @@ fun CombusAppInicial(customFontFamily: FontFamily, navController: NavController)
                 Spacer(modifier = Modifier.weight(1f))
             }
             Text(
-                text = "Bem-vindo!",
+                text = stringResource(R.string.bem_vindo),
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 modifier = Modifier.padding(bottom = 18.dp)
             )
             Text(
-                text = "Como podemos te ajudar hoje?",
+                text = stringResource(R.string.frase_inicial),
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
@@ -148,9 +149,9 @@ fun OpcoesMenu(customFontFamily: FontFamily, navController: NavController) {
     ) {
         // Lista de opções
         val opcoes = listOf(
-            Triple("Consumo", R.drawable.bomba_combustivel, "consumo"),
-            Triple("Custo da viagem", R.drawable.localizacao, "custo_viagem"),
-            Triple("Combustível vantajoso", R.drawable.grafico_dinheiro, "combustivel_vantajoso")
+            Triple(stringResource(R.string.consumo), R.drawable.bomba_combustivel, "consumo"),
+            Triple(stringResource(R.string.custo_viagem), R.drawable.localizacao, "custo_viagem"),
+            Triple(stringResource(R.string.combustivel_vantajoso), R.drawable.grafico_dinheiro, "combustivel_vantajoso")
         )
 
         opcoes.forEach { (titulo, imagem, rota) ->

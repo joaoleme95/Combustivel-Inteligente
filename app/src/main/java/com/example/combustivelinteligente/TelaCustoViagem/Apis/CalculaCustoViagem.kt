@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -58,7 +59,7 @@ fun CalculaCustoViagem(
         ) {
             if (distancia == "0") {
                 Text(
-                    text = "Erro ao calcular distância",
+                    text = stringResource(R.string.erro_viagem),
                 )
             } else {
                 Text(
@@ -69,7 +70,7 @@ fun CalculaCustoViagem(
                                 fontWeight = FontWeight.Medium
                             )
                         ) {
-                            append("Quilometragem do trajeto:\n")
+                            append(stringResource(R.string.quilometragem_trajeto))
                         }
                         withStyle(
                             style = SpanStyle(
@@ -86,7 +87,7 @@ fun CalculaCustoViagem(
                                 fontWeight = FontWeight.Medium
                             )
                         ) {
-                            append("\nA viagem custará aproximadamente:\n")
+                            append(stringResource(R.string.resultado_viagem))
                         }
                         withStyle(
                             style = SpanStyle(

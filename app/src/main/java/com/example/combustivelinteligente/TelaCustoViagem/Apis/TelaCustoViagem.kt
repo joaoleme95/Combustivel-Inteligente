@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -98,7 +99,7 @@ fun TelaCustoViagem(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "Custo de viagem",
+                    text = stringResource(R.string.calculo_viagem),
                     fontFamily = customFontFamily,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
@@ -133,7 +134,7 @@ fun EnderecoSaida(customFontFamily: FontFamily, placesClient: PlacesClient) {
             .padding(horizontal = 24.dp)
     ) {
         Text(
-            text = "Endereço de saída",
+            text = stringResource(R.string.endereco_partida),
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
@@ -233,7 +234,7 @@ fun EnderecoDestino(
             .fillMaxWidth()
     ) {
         Text(
-            text = "Destino",
+            text = stringResource(R.string.destino),
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
@@ -328,7 +329,7 @@ fun ConsumoCarro(customFontFamily: FontFamily, enderecoSaida: String, enderecoDe
             .fillMaxWidth()
     ) {
         Text(
-            text = "Consumo do veículo em Km/L",
+            text = stringResource(R.string.consumo_em_km),
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
@@ -400,7 +401,7 @@ fun ValorCombustivel(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Valor pago no combustível",
+                text = stringResource(R.string.valor_pago),
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp
@@ -434,7 +435,7 @@ fun ValorCombustivel(
                     .fillMaxWidth()
                     .padding(vertical = 12.dp)
             ) {
-                Text("Calcular",
+                Text(stringResource(R.string.calcular),
                     fontFamily = customFontFamily,
                     color = Color.White)
             }
@@ -489,18 +490,14 @@ fun DialogExplicacaoCustoViagem(onDismiss: () -> Unit) {
     AlertDialog(
         title = {
             Text(
-                text = "Como usar a calculadora?",
+                text = stringResource(R.string.como_usar_calculadora),
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Bold
             )
         },
         text = {
             Text(
-                text = "Para saber o custo total de combustível de uma viagem," +
-                        " basta colocar os endereços de origem e destino," +
-                        " o rendimento do carro na estrada em km/l e o valor do combustível em questão." +
-                        "\n\n O aplicativo utiliza a api do Google Maps para calcular a distância entre os pontos," +
-                        " então certifique-se de estar conectado a internet.",
+                text = stringResource(R.string.explicacao_viagem),
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium
             )

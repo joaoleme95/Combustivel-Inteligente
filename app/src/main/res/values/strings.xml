@@ -1,3 +1,65 @@
 <resources>
+    <!--Tela inicial-->
     <string name="app_name">Combustível Inteligente</string>
+    <string name="bem_vindo">Bem-vindo!</string>
+    <string name="frase_inicial">Como podemos te ajudar hoje?</string>
+    <string name="consumo">Consumo</string>
+    <string name="custo_viagem">Custo da Viagem</string>
+    <string name="combustivel_vantajoso">Combustível Vantajoso</string>
+    <string name="calcular">Calcular</string>
+    <string name="fechar">Fechar</string>
+    <string name="como_usar_calculadora">Como usar a calculadora?</string>
+
+    <!--Tela consumo-->
+    <string name="calculo_consumo">Cálculo de consumo de combustível</string>
+    <string name="quilometragem_rodada">Quilometragem rodada</string>
+    <string name="litros_gastos">Litros gastos</string>
+    <string name="explicacao_calculadora">
+        Como usar esta calculadora:\n
+        1. Encha o tanque do seu veículo e zere a quilometragem no painel.\n
+        2. Dirija normalmente por alguns dias.\n
+        3. Ao completar o tanque novamente:\n
+        - Anote a quilometragem atual (desde que zerou).\n
+        - Anote a quantidade de litros abastecidos.\n
+        4. Preencha esses dois valores na calculadora:\n
+        - Quilômetros percorridos\n
+        - Litros abastecidos\n
+        O app calculará o consumo médio do seu veículo automaticamente.
+    </string>
+
+    <!--Tela custo viagem-->
+    <string name="calculo_viagem">Cálculo de custo da viagem</string>
+    <string name="endereco_partida">Ponto de partida</string>
+    <string name="destino">Destino</string>
+    <string name="consumo_em_km">Consumo do veículo em Km/L</string>
+    <string name="valor_pago">Valor pago no combustível</string>
+    <string name="explicacao_viagem">Para saber o custo total de combustível de uma
+    viagem, basta inserir os pontos de partida e destino, o rendimento do carro na
+    estrada em Km/L, e o valor do combustível em questão.\n\n
+    O aplicativo utiliza a api do Google Maps para calcular a distância
+    entre os endereços, então certifique-se de estar conectado a internet
+    </string>
+
+    <!--Tela combustivel vantajoso-->
+    <string name="etanolxgasolina">Etanol x Gasolina</string>
+    <string name="preco_etanol">Preço do etanol</string>
+    <string name="preco_gasolina">Preço da gasolina</string>
+    <string name="explicacao_combustivel">Para usar esta calculadora basta inserir
+    o valor do etanol e da gasolina. O aplicativo exibirá a melhor opção.
+    </string>
+
+    <!--Resultados-->
+    <string name="resultado_consumo">Seu veículo faz em média:\n</string>
+    <string name="quilometragem_trajeto">Quilometragem do trajeto:\n</string>
+    <string name="resultado_viagem">\nA viagem custará aproximadamente:\n</string>
+
+    <string name="etanol">Etanol</string>
+    <string name="gasolina">Gasolina</string>
+    <string name="abaixo">abaixo</string>
+    <string name="acima">acima</string>
+    <string name="texto_resultado_combustivel">O resultado deu %1$s,
+        que é %2$s de 0,73, portanto o combustível vantajoso é:</string>
+
+    <string name="erro_viagem">Erro ao calcular distância</string>
+
 </resources>

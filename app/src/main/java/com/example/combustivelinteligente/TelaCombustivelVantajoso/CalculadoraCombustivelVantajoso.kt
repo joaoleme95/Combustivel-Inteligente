@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -47,13 +48,23 @@ fun CalculaCombustivelVantajoso(
     }
 
     val resultadoFormatado = String.format(Locale.US, "%.2f", resultado)
-    var combusivelVantajoso = "Etanol"
-    var textoResultado = "abaixo"
-
-    if (resultado > 0.73) {
-        combusivelVantajoso = "Gasolina"
-        textoResultado = "acima"
+    val combusivelVantajoso = if (resultado > 0.73) {
+        stringResource(R.string.gasolina)
+    } else {
+        stringResource(R.string.etanol)
     }
+
+    val textoResultado = if (resultado > 0.73) {
+        stringResource(R.string.acima)
+    } else {
+        stringResource(R.string.abaixo)
+    }
+
+    val textoExplicativo = stringResource(
+        R.string.texto_resultado_combustivel,
+        resultadoFormatado,
+        textoResultado
+    )
 
     Card(
         colors = CardDefaults.cardColors(
@@ -77,10 +88,7 @@ fun CalculaCombustivelVantajoso(
                             fontWeight = FontWeight.Medium
                         )
                     ) {
-                        append(
-                            "O resultado deu $resultadoFormatado, que é $textoResultado de 0,73, " +
-                                    "portanto o combustível vantajoso é:\n"
-                        )
+                        append(textoExplicativo)
                     }
                     withStyle(
                         style = SpanStyle(
@@ -89,7 +97,7 @@ fun CalculaCombustivelVantajoso(
                             fontSize = 20.sp
                         )
                     ) {
-                        append("\n$combusivelVantajoso")
+                        append("\n\n$combusivelVantajoso")
                     }
                 },
                 fontSize = 18.sp,

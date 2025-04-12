@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -57,7 +58,7 @@ fun CalculaConsumo(quilometragem: String, litros: String, customFontFamily: Font
                             fontWeight = FontWeight.Medium
                         )
                     ) {
-                        append("Seu veículo faz em média:\n")
+                        append(stringResource(R.string.resultado_consumo))
                     }
                     withStyle(
                         style = SpanStyle(

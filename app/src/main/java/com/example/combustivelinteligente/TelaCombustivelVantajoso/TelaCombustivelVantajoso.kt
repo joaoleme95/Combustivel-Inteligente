@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -76,7 +77,7 @@ fun TelaCombustivelVantajoso(customFontFamily: FontFamily, navController: NavCon
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "Etanol X Gasolina",
+                    text = stringResource(R.string.etanolxgasolina),
                     fontFamily = customFontFamily,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
@@ -108,7 +109,7 @@ fun PrecoEtanol(customFontFamily: FontFamily) {
             .padding(horizontal = 24.dp)
     ) {
         Text(
-            text = "Preço do etanol",
+            text = stringResource(R.string.preco_etanol),
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
@@ -150,7 +151,7 @@ fun PrecoGasolina(customFontFamily: FontFamily, valorEtanol: String) {
             .fillMaxWidth()
     ) {
         Text(
-            text = "Preço da gasolina",
+            text = stringResource(R.string.preco_gasolina),
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
@@ -205,15 +206,14 @@ fun DialogExplicacaoCombustivelVantajoso(onDismiss: () -> Unit) {
     AlertDialog(
         title = {
             Text(
-                text = "Como usar a calculadora?",
+                text = stringResource(R.string.como_usar_calculadora),
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Bold
             )
         },
         text = {
             Text(
-                text = "Para usar esta calculadora basta colocar o valor do etanol" +
-                        " e da gasolina nos respectivos lugares. O resultado dará a melhor opção.",
+                text = stringResource(R.string.explicacao_combustivel),
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium
             )

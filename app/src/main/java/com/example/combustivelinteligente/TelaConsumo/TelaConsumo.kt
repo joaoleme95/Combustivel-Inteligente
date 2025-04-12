@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -75,7 +76,7 @@ fun TelaConsumo(customFontFamily: FontFamily, navController: NavController) {
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "Cálculo de consumo",
+                    text = stringResource(R.string.calculo_consumo),
                     fontFamily = customFontFamily,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
@@ -107,7 +108,7 @@ fun QuilometragemRodada(customFontFamily: FontFamily) {
             .padding(horizontal = 24.dp)
     ) {
         Text(
-            text = "Quilometragem rodada",
+            text = stringResource(R.string.quilometragem_rodada),
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
@@ -148,7 +149,7 @@ fun LitrosGastos(customFontFamily: FontFamily, quilometragem: String) {
             .fillMaxWidth()
     ) {
         Text(
-            text = "Litros gastos",
+            text = stringResource(R.string.litros_gastos),
             fontFamily = customFontFamily,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
@@ -182,7 +183,7 @@ fun LitrosGastos(customFontFamily: FontFamily, quilometragem: String) {
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)
         ) {
-            Text("Calcular",
+            Text(stringResource(R.string.calcular),
                 fontFamily = customFontFamily,
                 color = Color.White)
         }
@@ -202,20 +203,14 @@ fun DialogExplicacaoConsumo(onDismiss: () -> Unit) {
     AlertDialog(
         title = {
             Text(
-                text = "Como usar a calculadora?",
+                text = stringResource(R.string.como_usar_calculadora),
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Bold
             )
         },
         text = {
             Text(
-                text = "Para usar esta calculadora basta colocar a " +
-                        "quantidade de quilomêtros percorridos e os litros" +
-                        " gastos. Para isso quando completar o tanque zere" +
-                        " a quilometragem no painel. Ande por algum tempo" +
-                        " e complete o tanque novamente. Coloque na calculadora" +
-                        " os valores de quilomêtros na hora do segundo abastecimento" +
-                        " e a quantidade de combustível abastecido na segunda vez.",
+                text = stringResource(R.string.explicacao_calculadora),
                 fontFamily = customFontFamily,
                 fontWeight = FontWeight.Medium
             )
@@ -226,7 +221,7 @@ fun DialogExplicacaoConsumo(onDismiss: () -> Unit) {
                 onClick = { onDismiss() }
             ) {
                 Text(
-                    "Fechar",
+                    stringResource(R.string.fechar),
                     fontFamily = customFontFamily,
                     fontWeight = FontWeight.Bold
                 )
