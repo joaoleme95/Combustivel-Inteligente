@@ -2,6 +2,7 @@ package com.example.combustivelinteligente.TelaCombustivelVantajoso
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -183,7 +185,9 @@ fun PrecoGasolina(customFontFamily: FontFamily, valorEtanol: String) {
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)
         ) {
-            Text("Calcular", fontFamily = customFontFamily)
+            Text("Calcular",
+                fontFamily = customFontFamily,
+                color = Color.White)
         }
         Column(
             Modifier.fillMaxWidth(),

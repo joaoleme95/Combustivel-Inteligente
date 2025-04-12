@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,11 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -40,6 +39,7 @@ import com.example.combustivelinteligente.R
 import com.example.combustivelinteligente.TelaCombustivelVantajoso.TelaCombustivelVantajoso
 import com.example.combustivelinteligente.TelaConsumo.TelaConsumo
 import com.example.combustivelinteligente.TelaCustoViagem.Apis.TelaCustoViagem
+import com.example.combustivelinteligente.ui.theme.CombusAppTheme
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 
@@ -57,8 +57,10 @@ class MainActivity : ComponentActivity() {
         Places.initialize(applicationContext, BuildConfig.GOOGLE_API_KEY)
         val placesClient = Places.createClient(this)
         setContent {
-            val navController = rememberNavController()
-            CombusAppNavHost(customFontFamily, navController = navController, placesClient)
+            CombusAppTheme {
+                val navController = rememberNavController()
+                CombusAppNavHost(customFontFamily, navController = navController, placesClient)
+            }
         }
     }
 }
@@ -137,80 +139,47 @@ fun CombusAppInicial(customFontFamily: FontFamily, navController: NavController)
 
 @Composable
 fun OpcoesMenu(customFontFamily: FontFamily, navController: NavController) {
+    val isDarkTheme = isSystemInDarkTheme()
+    val contentColor = if (isDarkTheme) Color.White else Color.Black
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        // Primeira opção
-        Button(
-            onClick = { navController.navigate("consumo") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
-        ) {
-            Text(
-                text = "Consumo",
-                fontFamily = customFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                color = Color.Black
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Image(
-                painter = painterResource(id = R.drawable.bomba_combustivel),
-                contentDescription = "",
-                modifier = Modifier.size(50.dp)
-            )
-        }
+        // Lista de opções
+        val opcoes = listOf(
+            Triple("Consumo", R.drawable.bomba_combustivel, "consumo"),
+            Triple("Custo da viagem", R.drawable.localizacao, "custo_viagem"),
+            Triple("Combustível vantajoso", R.drawable.grafico_dinheiro, "combustivel_vantajoso")
+        )
 
-        // Segunda opção
-        Button(
-            onClick = { navController.navigate("custo_viagem") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
-        ) {
-            Text(
-                text = "Custo da viagem",
-                fontFamily = customFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                color = Color.Black
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Image(
-                painter = painterResource(id = R.drawable.localizacao),
-                contentDescription = "",
-                modifier = Modifier.size(50.dp)
-            )
-        }
-
-        // Terceira opção
-        Button(
-            onClick = { navController.navigate("combustivel_vantajoso") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
-        ) {
-            Text(
-                text = "Combustível vantajoso",
-                fontFamily = customFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                color = Color.Black
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Image(
-                painter = painterResource(id = R.drawable.grafico_dinheiro),
-                contentDescription = "",
-                modifier = Modifier.size(50.dp)
-            )
+        opcoes.forEach { (titulo, imagem, rota) ->
+            Button(
+                onClick = { navController.navigate(rota) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+                Text(
+                    text = titulo,
+                    fontFamily = customFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = contentColor
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    painter = painterResource(id = imagem),
+                    contentDescription = "",
+                    modifier = Modifier.size(50.dp),
+                    colorFilter = ColorFilter.tint(contentColor) // Aplica cor branca no dark
+                )
+            }
         }
     }
 }
+
 
 
 @Preview
